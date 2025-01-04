@@ -1,0 +1,133 @@
+:root {
+    --primary-color: #FFD54F;
+    --secondary-color: #D7C7FF;
+    --background-gradient: linear-gradient(to right, #FFEBB7, var(--secondary-color));
+    --text-color: #2F2F2F;
+    --border-color: #ddd;
+    --white: #fff;
+    --stroke: #524B43;
+}
+
+body, html {
+    font-family: 'Fredoka One', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%; 
+    overflow-y: auto;
+}
+
+.cont {
+    background-color: #f4f2f7;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-wrap: wrap;
+    padding: 20px;
+    overflow-y: auto; 
+}
+
+.container {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    padding: 82px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.container img {
+    width: 90px;
+    height: auto;
+}
+
+.container h1 {
+    font-size: 24px;
+    margin: 8px 0;
+    color: var(--text-color);
+    word-spacing: 5px;
+}
+
+/* .container p {
+    font-size: 17px;
+    margin-bottom: 32px;
+    color: var(--text-color);
+} */
+
+.container form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-width: 400px;
+    width: 100%;
+}
+
+.container form input {
+    border: 2px solid var(--stroke);
+    border-radius: 10px;
+    padding: 12.8px;
+    margin-bottom: 16px;
+    font-size: 14.4px;
+}
+
+.container form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.container form button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 0;
+    clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%);
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+.container form button:hover {
+    background-color: darkgoldenrod;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--text-color);
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.yellow{
+    color: var(--primary-color);
+}
+
+.options{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+
+.a{
+    color: var(--text-color);
+}
+
+input[type="email"]:-webkit-autofill, input[type="password"]:-webkit-autofill {
+    background-color: transparent !important; 
+    box-shadow: 0 0 0px 1000px white inset !important;
+  }

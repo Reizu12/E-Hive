@@ -1,0 +1,36 @@
+*{
+    font-family: 'Dongle', sans-serif;
+    line-height: 1;
+}
+
+.containers{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.content{
+    width: 100vw;
+    height: 100vh;
+}
+
+button, a{
+    cursor: pointer;
+}
+
+a, p, span{
+    font-size: 25px;
+}
+
+
+input[type="email"]:-webkit-autofill, input[type="password"]:-webkit-autofill, input[type="text"]:-webkit-autofill, input[type="email"]:-webkit-autofill {
+    background-color: transparent !important; 
+    box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+table{
+    table-layout: fixed;
+}
+

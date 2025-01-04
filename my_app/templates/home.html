@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<script src="{% static 'js/home.js' %}"> </script>
+
+
+<div class="dashboard">
+    <!-- Main Content -->
+    <main style="background: url({% static 'img/home/bgh.png' %}) no-repeat center center; background-size: cover;">
+        <header>
+            <div class="out-welcome">
+                <div class="welcome" style="background: url({% static 'img/banner/home.png' %}) no-repeat center center; background-size: cover;"></div>
+                <h3 id="greeting">
+                <span id="userName">{{ user_name }}</span>
+
+                </h3>
+                
+            </div>
+        {% include 'profile_temp.html' %}
+
+    </header>
+        <div class="proj">
+            <section class="projects">
+                <h2>My Projects ({{ project_count }})</h2>
+                <div class="scroll-container">
+                    <button class="scroll-btn left" onclick="scrollButtonLeft()">&#x25C0;</button>
+                
+                    <div class="project-grid-container">
+                        <div class="project-grid">
+                            {% if projects %}
+                                {% for project in projects %}
+                                    {% if project.project_status %}
+                                        <div class="project-card yellow" onclick="window.location.href='{% url 'view_proj' project.id %}'">
+                                            <img src="{% static 'img/home/b-yellow.png' %}">
+                                            <h1>{{ project.project_name }}</h1>
+                                            
+                                            <div class="manager">
+                                                <img src="{{ project.user.picture }}">
+                                                <p>{{ project.user.first_name }} {{ project.user.last_name }}</p>
+                                            </div>
+                                            
+                                            <div class="members-title">Project Members:</div>
+                                            <div class="members-row">
+                                                <div class="avatars">
+                                                    {% with project.memberships.all|slice:"3" as members %}
+                                                        {% for member in members %}
+                                                            {% if member.user != project.user %}
+                                                                <img src="{{ member.user.picture }}" alt="{{ member.user.first_name }}" class="avatar" style="width: 40px; height: 40px; border-radius: 50%;">
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endwith %}
+                                                </div>
+                                                <div class="member-names">
+                                                    {% with project.memberships.all|slice:"3" as members %}
+                                                        {% for member in members %}
+                                                            {% if member.user != project.user %}
+                                                                {{ member.user.first_name }}{% if not forloop.last %}, {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endwith %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <span style="text-align: center;">No projects found.</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <button class="scroll-btn right" onclick="scrollButtonRight()">&#x25B6;</button>
+                </div>
+            </section>
+            
+            
+            <section class="team-projects">
+                <h2>Team Projects ({{ shared_project_count }})</h2>
+                <div class="scroll-container">
+                    <button class="scroll-btn left" onclick="scrollButtonLeft2()">&#x25C0;</button>
+                    <div class="project-grid-container">
+                        <div class="project-grid2">
+                            {% if sharedProjects %}
+                            {% for project in sharedProjects %}
+                                {% if project.project_status %}
+                                
+                                <div class="project-card yellow" onclick="window.location.href='{% url 'view_proj' project.id %}'">
+                                    <img src="{% static 'img/home/b-yellow.png' %}">
+                                    <h1>{{ project.project_name }}</h1>
+                                    <div class="manager"> <img src="{{ project.user.picture }}"><p>{{ project.user.first_name }} {{ project.user.last_name }}</p></div>
+                                    <div class="members-title">Project Members:</div>
+                                    <div class="members-row">
+                                        <div class="avatars">
+                                            {% with project.memberships.all|slice:"3" as members %}
+                                                {% for member in members %}
+                                                    {% if member.user != project.user %}
+                                                        <img src="{{ member.user.picture }}" alt="{{ member.user.first_name }}" class="avatar" style="width: 40px; height: 40px; border-radius: 50%;">
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </div>
+                                        <div class="member-names">
+                                            {% with project.memberships.all|slice:"3" as members %}
+                                                {% for member in members %}
+                                                    {% if member.user != project.user %}
+                                                        {{ member.user.first_name }}{% if not forloop.last %}, {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% elif project.some_value == 0 %}
+                                    <tr>
+                                        <span style="text-align: center;">No projects found.</span>
+                                    </tr>
+                                {% endif %}
+                                
+                            {% endfor %}
+                            {% else %}
+                                    <span style="text-align: center;">No projects found.</span>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <button class="scroll-btn right" onclick="scrollButtonRight2()">&#x25B6;</button>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+{% endblock %}

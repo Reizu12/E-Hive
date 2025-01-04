@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{% static 'img/landingpage/logo.png' %}" type="image/x-icon"> 
+  <script src="{% static 'js/index.js' %}"> </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+        <div class="logo">
+          <img src="{% static 'img/landingpage/logo.png' %}" alt="E-Hive Logo"> 
+          <img class="logo-title" src="{% static 'img/landingpage/logo-title.png' %}" alt="Logo-Title">
+          
+        </div>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#features">Features</a></li>
+        </ul>
+        <a href="{% url "login" %}"><button class="login-btn">Login</button></a>
+    </header>
+
+    <main>
+      <section class="hero" id="home" style="background: url({% static 'img/landingpage/bgf.png' %}) no-repeat center center; background-size: cover;">
+        <div class="hero-content">
+          <h1>Manage Projects with the Efficiency of a Beehive</h1>
+          <p>
+            Experience the organized collaboration with E-Hive. Streamline your projects,
+            enhance team productivity, and achieve your goals with precision.
+          </p>
+          <a href="{% url "register" %}"><button class="get-started-btn">Get Started</button></a>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="feature">
+          <img src="{% static 'img/landingpage/PM.png' %}" alt="Project Management Icon">
+          <h3>Project Management</h3>
+          <p>Organize and track projects and tasks efficiently with our intuitive interface.</p>
+        </div>
+        <div class="feature">
+          <img src="{% static 'img/landingpage/TC.png' %}" alt="Team Collaboration Icon">
+          <h3>Team Collaboration</h3>
+          <p>Create a team and work together seamlessly.</p>
+        </div>
+        <div class="feature">
+          <img src="{% static 'img/landingpage/PT.png' %}" alt="Project Timeline Icon">
+          <h3>Project Timeline</h3>
+          <p>Visualize project progress and meet deadlines effectively.</p>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="features">
+        <h1 class="gallery-title">Gallery</h1>
+        <div class="carousel-bg">
+          <div class="carousel">
+            <button class="carousel-btn prev">‹</button>
+            <div class="carousel-track-container">
+              <ul class="carousel-track">
+                <li class="carousel-slide"><img src="{% static 'img/landingpage/p1.png' %}" alt="Image 1"></li>
+                <li class="carousel-slide"><img src="{% static 'img/landingpage/p1.png' %}" alt="Image 1"></li>
+                <li class="carousel-slide"><img src="{% static 'img/landingpage/p1.png' %}" alt="Image 1"></li>
+                <li class="carousel-slide"><img src="{% static 'img/landingpage/p1.png' %}" alt="Image 1"></li>
+                <li class="carousel-slide"><img src="{% static 'img/landingpage/p1.png' %}" alt="Image 1"></li>
+                <li class="carousel-slide"><img src="{% static 'img/landingpage/p1.png' %}" alt="Image 1"></li>
+              </ul>
+            </div>
+            <button class="carousel-btn next">›</button>
+          </div>  
+        </div>              
+      </section>
+
+      <section class="about-us" id="about"> 
+        <h1 class="about-title">About Us</h1>
+
+        <div class="about-container">
+          <div class="logt"><img class="logo-title" src="{% static 'img/landingpage/logt.png' %}" alt="Logo-Title"></div>
+          <div class="desc"> <p><span>E-Hive </span>is a project management web application designed to streamline team collaboration and task management. It empowers project managers and team members to efficiently plan, organize, and track their work using essential tools and features.</p></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="tagline">Streamlining Collaboration, One Project at a Time.</p>
+        <nav class="footer-nav">
+          <a href="#">Home</a>
+          <a href="#">Features</a>
+          <a href="#">About Us</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy Policy</a>
+        </nav>
+        <p class="copyright">E-Hive © 2024</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

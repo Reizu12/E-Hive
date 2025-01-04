@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+
+<style>
+
+    /* Gantt Task Bar Colors */
+    .gantt .bar {
+        fill:rgb(248, 205, 75);
+        stroke: #ffa000;
+        font-size: 15px;
+    }
+
+    /* Gantt Progress Bar Color */
+    .gantt .bar-progress {
+        fill:rgb(88, 187, 91);
+        stroke: #388e3c;
+    }
+
+    {% comment %} /* Gantt Progress Bar Hover Color */
+    .gantt .bar-wrapper.active .bar-progress, .gantt .bar-wrapper:hover .bar-progress{
+        fill:rgb(88, 187, 91);
+        stroke: #388e3c;
+    }
+
+    /* Gantt Task Bar Hover Colors */
+    .gantt .bar-wrapper.active .bar, .gantt .bar-wrapper:hover .bar{
+        fill:rgb(88, 187, 91); /* Default Task Bar Color */
+        stroke: #388e3c;
+    } {% endcomment %}
+
+    .bar-progress, .bar {
+        height: 30px;
+    }
+
+    /* Task Labels (Text Inside Task Bar) */
+    .gantt .bar-label {
+        fill: #fff; /* Text Color */
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .bar-wrapper{
+        transform: translateY(-7px);
+    }
+    .bar-label {
+
+        transform: translateY(7px); /* Moves the label upwards */
+    }
+
+    .handle {
+        display: none !important;
+    }
+
+    /* Task Hover Effect */
+    .gantt .bar:hover {
+        fill: #66bb6a; /* Hover Color */
+    }
+
+    /* Weekend Background Color */
+    .gantt .grid-row:nth-child(odd) {
+        fill: transparent; /* Light Background */
+    }
+    .gantt .grid-row:nth-child(even) {
+        fill: #EAECF0 /* Slightly Darker Background */
+    }
+
+    /* Today Highlight Line */
+    .gantt .today-highlight {
+        stroke:rgb(253, 81, 28); /* Highlight Color */
+        stroke-width: 2px;
+    }
+
+    /* Dependency Arrow Color */
+    .gantt .arrow path {
+        stroke: #8e24aa; /* Arrow Color */
+        stroke-width: 2px;
+    }
+
+    .gantt-container .popup-wrapper {
+        background: #fff;
+        pointer-events: none;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .gantt-container{
+        background: url(/static/img/home/bgh2.png) no-repeat center center;
+        background-size: 1920px 1080px;
+        background-size: cover;
+    }
+
+    .popup-wrapper{
+        margin: 21px 0 0 25px
+    }
+    .mb-3 {
+        margin-top: 20px;
+    }
+    .row {
+        margin: 0;
+    }
+    .d-flex {
+        gap: 15px;
+    }
+    .dropdown-menu.show {
+        font-size: 25px;
+        .btn {
+            font-size: 25px;
+        }
+    }
+    #shareDropdown .dropdown-menu {
+        width: 400px;
+    }
+    .gantt .lower-text, .gantt .upper-text, .form-control, .dropdown-toggle {
+        font-size: 25px;
+    }
+    .btn {
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+    }
+    a:hover {
+        text-decoration: none;
+        background-color: none;
+        color: black;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+<div class="dashboard">
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            <div class="out-welcome">
+                <div class="welcome" style="background: url({% static 'img/banner/timeline.png' %}) no-repeat center center; background-size: cover;"></div>
+                <h3>TIMELINE</h3>
+            </div>
+            {% include 'profile_temp.html' %}
+        </header>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <input type="text" class="form-control w-25" placeholder="Search Timeline">
+            <!-- Status Category Dropdown -->
+            <div class="d-flex">
+                 <!-- Project Titles Dropdown -->
+                 <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="projectDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Project
+                    </button>
+                    <div class="dropdown-menu" id="projectDropdownMenu" aria-labelledby="projectDropdown">
+                        {% for project in user_projects %}
+                            <a class="dropdown-item project-option" href="#" data-project-id="{{ project.id }}">
+                                {{ project.project_name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+
+                <!-- Share Dropdown -->
+                {% comment %} <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Share
+                    </button>
+                    <div class="dropdown-menu p-3" aria-labelledby="shareDropdown" style="width:400px;">
+                        <form>
+                            <div class="form-group">
+                                <label for="emailAddress">Name or Email Address<span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="emailAddress" placeholder="Email Address">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message (Optional)</label>
+                                <textarea class="form-control" id="message" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-warning">Share</button>
+                        </form>
+                        <hr>
+                        <a href="#" class="dropdown-item">Copy link</a>
+                    </div>
+                </div> {% endcomment %}
+
+                
+
+                {% comment %} <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="statusCategoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Status Category
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="statusCategoryDropdown">
+                        <a class="dropdown-item" href="#">Option 1</a>
+                        <a class="dropdown-item" href="#">Option 2</a>
+                    </div>
+                </div>
+             {% endcomment %}
+
+                <!-- Export Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="exportDropdown">
+                        <a class="dropdown-item" href="#" id="exportAsExcel">Spreadsheet (.xlsx)</a>
+                        <a class="dropdown-item" href="#" id="exportAsImage">Image (.png)</a>
+                        <a class="dropdown-item" href="#" id="exportAsPDF">File (.pdf)</a>
+                        <a class="dropdown-item" href="#" id="exportAsCSV">Spreadsheet (.csv)</a>
+                    </div>
+                </div>
+                
+                
+            
+                {% comment %} <!-- Filter Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                        <a class="dropdown-item" href="#" onclick="changeViewMode('Day')">Day</a>
+                        <a class="dropdown-item" href="#" onclick="changeViewMode('Week')">Week</a>
+                        <a class="dropdown-item" href="#" onclick="changeViewMode('Month')">Month</a>
+                    </div>
+                </div> {% endcomment %}
+            </div>
+        </div>
+
+        <!-- Gantt Chart Container -->
+        <svg id="gantt"></svg>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> <!-- Popper.js v1 -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+        <script src="{% static 'js/timeline.js' %}"> </script>
+
+    </main>
+</div>
+{% endblock %}

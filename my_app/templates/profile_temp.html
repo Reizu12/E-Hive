@@ -1,0 +1,168 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/profile_temp.css' %}">
+
+<div class="profile">
+    <!-- Notification Icon -->
+    <form method="POST">
+        {% csrf_token %}
+    </form>
+    <div class="notification notification-icon-svg" >
+        <svg class="notification-icon-svg" width="53" height="58" viewBox="0 0 53 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="hex" d="M44.9988 12.9182L44.9985 12.918L31.0423 4.73529C31.0422 4.73523 31.0421 4.73517 31.042 4.73511C29.6647 3.92743 28.098 3.5 26.5 3.5C24.902 3.5 23.3353 3.92743 21.958 4.73511C21.9579 4.73517 21.9578 4.73523 21.9577 4.73529L8.00151 12.918L8.0012 12.9182C6.62371 13.726 5.48666 14.884 4.69903 16.2704C3.91181 17.6559 3.49964 19.2235 3.5 20.816C3.5 20.8162 3.5 20.8163 3.5 20.8165C3.5 20.8168 3.5 20.817 3.5 20.8173L3.5 37.184V37.1841C3.50004 38.7764 3.91253 40.3437 4.69992 41.729C5.48751 43.1146 6.62421 44.272 8.00115 45.0795C8.00117 45.0795 8.00118 45.0795 8.0012 45.0796L21.9576 53.2647L21.9577 53.2647C23.3351 54.0725 24.9019 54.5 26.5 54.5C28.0981 54.5 29.6649 54.0725 31.0423 53.2647L31.0424 53.2647L44.9988 45.0796C44.9988 45.0795 44.9988 45.0795 44.9989 45.0795C46.3758 44.272 47.5125 43.1146 48.3001 41.729C49.0875 40.3437 49.5 38.7764 49.5 37.1841V37.184V20.8137V20.8136C49.5 19.2213 49.0875 17.654 48.3001 16.2688C47.5125 14.8831 46.3758 13.7257 44.9988 12.9182Z" stroke="#EEBE4F" stroke-width="7"/>
+            <path class="body" fill-rule="evenodd" clip-rule="evenodd" d="M15.0284 24.9375C15.0284 22.0367 16.1807 19.2547 18.2319 17.2035C20.2831 15.1523 23.0651 14 25.9659 14C28.8667 14 31.6487 15.1523 33.6999 17.2035C35.751 19.2547 36.9034 22.0367 36.9034 24.9375V30.8187L39.7503 36.5125C39.8813 36.7746 39.9432 37.0658 39.93 37.3585C39.9169 37.6512 39.8291 37.9357 39.675 38.1849C39.521 38.4341 39.3058 38.6399 39.0498 38.7825C38.7939 38.9252 38.5058 39 38.2128 39H32.019C31.6714 40.341 30.8884 41.5286 29.7929 42.3764C28.6973 43.2243 27.3512 43.6843 25.9659 43.6843C24.5806 43.6843 23.2345 43.2243 22.1389 42.3764C21.0433 41.5286 20.2603 40.341 19.9128 39H13.719C13.426 39 13.1379 38.9252 12.8819 38.7825C12.626 38.6399 12.4108 38.4341 12.2567 38.1849C12.1027 37.9357 12.0149 37.6512 12.0017 37.3585C11.9886 37.0658 12.0505 36.7746 12.1815 36.5125L15.0284 30.8187V24.9375ZM23.2596 39C23.5339 39.475 23.9284 39.8695 24.4034 40.1437C24.8785 40.418 25.4174 40.5624 25.9659 40.5624C26.5144 40.5624 27.0533 40.418 27.5283 40.1437C28.0034 39.8695 28.3978 39.475 28.6721 39H23.2596ZM25.9659 17.125C23.8939 17.125 21.9067 17.9481 20.4416 19.4132C18.9765 20.8784 18.1534 22.8655 18.1534 24.9375V30.8187C18.1533 31.3036 18.0405 31.7819 17.8237 32.2156L15.9956 35.875H35.9378L34.1096 32.2156C33.8924 31.782 33.779 31.3038 33.7784 30.8187V24.9375C33.7784 22.8655 32.9553 20.8784 31.4902 19.4132C30.025 17.9481 28.0379 17.125 25.9659 17.125Z" fill="#EEBE4F"/>
+        </svg>
+        <div id="notification-modal" class="notification-modal">
+            <h2 class="modal-title8">Notifications</h2>
+            <div class="modal-content8">
+                {% if notifications %}
+                <div class="notifications-container">
+                    {% for notification in notifications %}
+                        <div class="notification-item">
+                            <img src="{% if notification.project and notification.project.user.picture %}
+                                        {{ notification.project.user.picture }}
+                                      {% else %}
+                                        {% static 'img/profiles/default_profile.jpg' %}
+                                      {% endif %}" 
+                                 alt="Project Owner" 
+                                 class="avatar">
+                            
+                            <div class="notification-text">
+                                <div>
+                                    <strong>{{ notification.user.first_name }} {{ notification.user.last_name }}</strong>
+                                    {{ notification.notification_message }} <br>
+                                    {% if notification.project %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            {% if notification.notification_type == 'INVITATION' %}
+                            <div class="notification-actions">
+                                <button class="btn-accept" data-id="{{ notification.id }}">Accept</button>
+                                <button class="btn-reject" data-id="{{ notification.id }}">Reject</button>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="notification-date">
+                                {{ notification.notification_timestamp|date:"M d" }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="text-align:center; width: 100%;">No new notifications.</p>
+            {% endif %}
+            
+            
+                <!-- Add more notifications dynamically here -->
+            </div>
+        </div>
+    
+    </div>
+
+    <!-- Profile -->
+    <a href="{% url 'profile'%}">
+        <div class="hexagon2-btn-wrapper">
+            <div class="hexagon2">
+                <img src="{{ user_profile }}" alt="Profile Picture" class="avatar2">
+            </div>
+        </div>
+        <div class="profile-card">
+            <span class="name">{{ user_name }}</span>
+        </div>        
+        <span class="tooltiptext">Visit Profile</span>
+    </a>
+</div>
+
+{% comment %} 
+<script src="{% static 'js/notifications.js' %}"></script> {% endcomment %}
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const notificationIcons = document.querySelectorAll(".notification-icon-svg");
+        const notificationModal = document.getElementById("notification-modal");
+
+        notificationIcons.forEach((icon) => {
+            icon.addEventListener("click", (event) => {
+                event.stopPropagation();
+                notificationModal.style.display = notificationModal.style.display === "flex" ? "none" : "flex";
+            });
+        });
+
+        window.addEventListener("click", (event) => {
+            if (notificationModal.style.display === "flex" && !notificationModal.contains(event.target)) {
+                notificationModal.style.display = "none";
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const acceptButtons = document.querySelectorAll('.btn-accept');
+        const rejectButtons = document.querySelectorAll('.btn-reject');
+    
+        const csrfToken =
+            document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ||
+            document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+    
+        if (!csrfToken) {
+            console.error('CSRF Token not found. Make sure {% csrf_token %} or <meta name="csrf-token"> is included in your template.');
+        } else {
+            console.log('CSRF Token found:', csrfToken);
+        }
+    
+        acceptButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const notificationId = this.dataset.id;
+    
+                fetch(`/notification/accept/${notificationId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Invitation accepted!');
+                        location.reload();
+                    } else {
+                        alert(`Error: ${data.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const notificationId = this.dataset.id;
+    
+                fetch(`/notification/reject/${notificationId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Invitation rejected!');
+                        location.reload();
+                    } else {
+                        alert(`Error: ${data.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+    
+    
+</script>

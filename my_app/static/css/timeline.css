@@ -1,0 +1,13 @@
+.timeline-bar {
+    background-color: #b19cd9;
+    height: 20px;
+    border-radius: 5px;
+}
+
+.gantt-container {
+    overflow-x: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 560px; /* 460px*/
+}

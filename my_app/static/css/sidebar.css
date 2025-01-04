@@ -1,0 +1,222 @@
+:root {
+    --primary-color: #f2b600;
+    --sidebar-background: #f5f8ff;
+    --text-color: #333;
+    --hover-opacity: 0.8;
+    --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    --sidebar-width: 80px;
+    --sidebar-item-height: 50px;
+    --icon-size: 50px;
+    --border-radius: 12px;
+    --white: #ffffff;
+    --button-color: #EEBE4F;
+    --button2-color:#524B43;
+}
+
+
+body, html {
+    font-family: 'Fredoka One', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.sidebar {
+    background-color: var(--sidebar-background);
+    width: var(--sidebar-width);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px;
+    box-shadow: var(--box-shadow);
+    border-right: #D7D7EA solid 1px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    /* overflow: hidden auto; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 10px);
+    
+}
+
+.sidebar-item {
+    text-align: center;
+}
+
+.sidebar-link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+}
+
+.icon-container {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+
+
+.sidebar-item.active svg .body {
+    fill: var(--white);
+}
+
+.sidebar-item.active svg .hex {
+    fill: var(--button-color);
+}
+
+.sidebar-link .body,  .sidebar-link .hex, .sidebar-link .lbody,  .sidebar-link .lhex, .profile svg .body, .profile svg .hex{
+    transition: fill ease-in-out 0.3s;
+    
+}
+
+.sidebar-link:hover .body, .profile svg:hover .body {
+    fill: var(--white);
+}
+
+.sidebar-link:hover .hex, .profile svg:hover .hex {
+    fill: var(--button-color);
+} 
+
+
+.sidebar-link:hover .lbody {
+    fill: var(--white);
+}
+
+.sidebar-link:hover .lhex {
+    fill: var(--button2-color);
+} 
+
+/* modal */
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.4); 
+    align-items: center;
+    justify-content: center;
+}
+  
+  .modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 400px;
+    text-align: center;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.modal-content img {
+    max-width: 100px;
+    margin-bottom: 20px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cancel, .save {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.modal-content h2{
+    font-size: 55px;
+}
+
+.cancel {
+    background-color: #D9D9D9;
+}
+
+.save {
+    background-color: #EEBE4F;
+}
+
+.modal-content::before,
+.modal-content::after {
+    content: "";
+    display: block;
+    width: 150px; 
+    height: 150px; 
+    background-size: cover;
+    position: absolute;
+    pointer-events: none;
+}
+
+.modal-content::before {
+    background-image: url('../img/modal/before.png'); 
+    left: -11px;
+    top: 75px;
+    transform: translateY(-50%);
+}
+
+.modal-content::after {
+    background-image: url('../img/modal/after.png'); 
+    right: -1px;
+    top: 80%;
+    transform: translateY(-50%);
+}
+
+.buts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    cursor: pointer;
+    a{
+        text-decoration: none;
+    }
+}
+
+a:hover{
+    text-decoration: none;
+    background-color: none;
+}
